@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Qlenfix Autocare — Modern Vehicle Diagnostics</title>
+
+  <!-- Fonts & icons -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Open+Sans:wght@300;400;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      --bg-0: #071016;
+      --bg-1: linear-gradient(180deg, #071016 0%, #08121a 100%);
+      --dim: rgba(255, 255, 255, 0.68);
+      --accent: #3498db;
+      --glass-border: rgba(255, 255, 255, 0.04);
+      --radius: 12px;
+      --max-width: 1100px;
+      --btn-shadow: 0 10px 24px rgba(52, 152, 219, 0.12);
+      --image-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+      --header-space: 120px;
+      /* approximate space for header + margins (used to size main) */
+      --footer-space: 64px;
+      /* approximate footer space */
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    html,
+    body {
+      height: 100%
+    }
+
+    body {
+      font-family: "Open Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      background: var(--bg-1);
+      color: var(--dim);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      padding: 36px 18px;
+      line-height: 1.55;
+      /* hide page-level overflow on body to keep all vertical scrolling inside the content column */
+      overflow: hidden;
+    }
+
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 28px;
+      /* keep header visible and outside of the scrolling content */
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column
+    }
+
+    .brand .title {
+      font-family: 'Montserrat', sans-serif;
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 1.3rem
+    }
+
+    .brand .subtitle {
+      font-size: 0.86rem;
+      color: var(--dim)
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-weight: 700;
+      text-decoration: none;
+      color: #061018;
+      background: linear-gradient(180deg, var(--accent), #2a86bf);
+      border: none;
+      box-shadow: var(--btn-shadow);
+      cursor: pointer;
+    }
+
+    .btn.ghost {
+      background: transparent;
+      border-radius: 10px;
+      padding: 9px 12px;
+      border: 1px solid var(--glass-border);
+      color: var(--dim);
+      box-shadow: none;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    /*
+      Main layout:
+        - fill available viewport height minus header/footer (approx)
+        - left: image (sticky/centered)
+        - right: scrollable content
+    */
+    .main {
+      display: grid;
+      grid-template-columns: 420px 1fr;
+      gap: 32px;
+      align-items: start;
+      height: calc(100vh - var(--header-space) - var(--footer-space));
+      /* main viewport area */
+      min-height: 420px;
+      margin-bottom: 18px;
+    }
+
+    /* LEFT: phone — keep visually centered/anchored */
+    .phone-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      /* make sticky so it stays in view while the right column scrolls */
+      position: sticky;
+      top: calc(36px + 16px);
+      /* sticky offset: page padding + small offset */
+      align-self: center;
+      height: fit-content;
+    }
+
+    .phone-box img {
+      width: 100%;
+      max-width: 380px;
+      border-radius: 14px;
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--image-shadow);
+      display: block;
+    }
+
+    /* RIGHT: content scrolls inside its column */
+    .content {
+      padding: 0 0 6px 0;
+      background: transparent;
+      border-radius: var(--radius);
+      height: 100%;
+      overflow: hidden;
+      /* container hides external scrollbars */
+      /* inner scroll area (content-scroll) will handle scrolling */
+    }
+
+    .content-inner {
+      padding: 22px;
+      height: 100%;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Hide native scrollbars but keep scroll functionality */
+    .content-inner::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+    }
+
+    .content-inner {
+      scrollbar-width: none;
+      /* Firefox */
+      -ms-overflow-style: none;
+      /* IE 10+ */
+    }
+
+    .eyebrow {
+      font-size: 0.9rem;
+      color: var(--dim);
+      margin-bottom: 8px
+    }
+
+    h1 {
+      font-family: 'Montserrat', sans-serif;
+      color: #fff;
+      font-size: 1.9rem;
+      margin: 0 0 8px
+    }
+
+    p.lead {
+      color: var(--dim);
+      margin: 0 0 14px
+    }
+
+    .features {
+      display: grid;
+      gap: 12px;
+      margin-top: 10px
+    }
+
+    .feature {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 6px 0
+    }
+
+    .feature .ico {
+      width: 46px;
+      height: 46;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      font-size: 18px
+    }
+
+    .feature h4 {
+      margin: 0;
+      color: #fff;
+      font-size: 1rem
+    }
+
+    .feature p {
+      margin: 6px 0 0 0;
+      color: var(--dim);
+      font-size: 0.95rem
+    }
+
+    /* Accordion styles */
+    .accordion {
+      border-top: 1px solid var(--glass-border);
+      margin-top: 18px
+    }
+
+    .accordion.open .accordion-header i.fa-chevron-down {
+      transform: rotate(180deg);
+    }
+
+    .accordion-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.05rem;
+      color: #fff;
+    }
+
+    .accordion-header i {
+      transition: transform 0.3s ease;
+    }
+
+    .accordion-header:hover {
+      color: var(--accent);
+    }
+
+    .accordion-preview {
+      font-size: 0.88rem;
+      color: rgba(255, 255, 255, 0.6);
+      margin-top: 2px;
+    }
+
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: all 0.45s cubic-bezier(.2, .9, .2, 1);
+    }
+
+    .accordion-content.open {
+      max-height: 1600px;
+      /* enough to hold content */
+      opacity: 1;
+    }
+
+    .fade {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+    }
+
+    .privacy-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px
+    }
+
+    .privacy-item {
+      font-size: 0.92rem;
+      color: var(--dim);
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.02)
+    }
+
+    .privacy-note {
+      font-size: 0.92rem;
+      color: rgba(255, 255, 255, 0.62)
+    }
+
+    footer {
+      margin-top: 28px;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.55);
+      font-size: 0.92rem
+    }
+
+    @media (max-width:1000px) {
+      .main {
+        grid-template-columns: 1fr;
+        gap: 18px;
+        height: auto;
+        /* allow main to size naturally on small screens */
+      }
+
+      .phone-box {
+        position: static;
+        order: 2;
+      }
+
+      .content {
+        order: 0;
+      }
+
+      .content-inner {
+        max-height: none;
+        overflow: visible;
+      }
+    }
+
+    @media (max-width:480px) {
+      body {
+        padding: 22px 12px
+      }
+
+      .brand .title {
+        font-size: 1.05rem
+      }
+
+      h1 {
+        font-size: 1.4rem
+      }
+
+      .phone-box img {
+        max-width: 320px
+      }
+
+      .privacy-grid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .promo-image {
+      width: 100%;
+      height: auto;
+      display: block;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <!-- Minimal header for this layout -->
+      </div>
+    </header>
+
+    <main class="main" role="main">
+      <!-- IMAGE LEFT (sticky + centered) -->
+      <aside class="phone-box" aria-hidden="true">
+        <a href="https://play.google.com/store/apps/details?id=com.qlenapps.qlenfixautocare" target="_blank">
+          <img src="Screenshot_20251125-123330.png" alt="Qlenfix app screenshot on phone" class="promo-image">
+        </a>
+
+        <div>&copy; 2025 Qlenfix Autocare — Built for trust & clarity.</div>
+      </aside>
+
+      <!-- CONTENT RIGHT (scrollable) -->
+      <article class="content" aria-labelledby="features-title">
+        <div class="content-inner">
+          <div class="eyebrow">Modern diagnostics • Trusted insights</div>
+          <h1 id="features-title">Reliable vehicle health, instantly</h1>
+          <p class="lead">Minimal, modern diagnostics that help you find issues faster, decide with confidence, and
+            keep your vehicle performing at its best.</p>
+
+          <!-- Accordion container -->
+          <div class="accordion-container">
+
+            <!-- FEATURES ACCORDION (default open) -->
+            <div class="accordion open">
+              <div class="accordion-header" onclick="toggleAccordion(this)">
+                <div>
+                  <i class="fa-solid fa-car-wrench accordion-icon"></i>
+                  Features
+                  <div class="accordion-preview">
+                    OBD Scanning | DTC Insights | AI Assistance | Trip Data
+                  </div>
+                </div>
+                <i class="fa-solid fa-chevron-down" style="transform: rotate(180deg);"></i>
+              </div>
+
+              <div class="accordion-content fade open">
+                <div class="features">
+
+                  <div class="feature">
+                    <div class="ico"><i class="fa-solid fa-microchip"></i></div>
+                    <div>
+                      <h4>OBD Scanning</h4>
+                      <p>Scan and clear DTCs, access live sensor and trip data — fast, local, and private.</p>
+                    </div>
+                  </div>
+
+                  <div class="feature">
+                    <div class="ico"><i class="fa-solid fa-bolt"></i></div>
+                    <div>
+                      <h4>DTC Insights</h4>
+                      <p>Instant explanations: causes, symptoms, severity, and diagnostic details for each trouble
+                        code.</p>
+                    </div>
+                  </div>
+
+                  <div class="feature">
+                    <div class="ico"><i class="fa-solid fa-robot"></i></div>
+                    <div>
+                      <h4>AI Assistance</h4>
+                      <p>Smart guidance with repair suggestions, step-by-step flows, and contextual troubleshooting
+                        advice.</p>
+                    </div>
+                  </div>
+
+                  <div class="feature">
+                    <div class="ico"><i class="fa-solid fa-share-from-square"></i></div>
+                    <div>
+                      <h4>Share Results</h4>
+                      <p>Only the user decides what to share: DTC reports and diagnostics for mechanics.</p>
+                    </div>
+                  </div>
+
+                  <div class="feature">
+                    <div class="ico"><i class="fa-solid fa-car-side"></i></div>
+                    <div>
+                      <h4>Trip & Sensor Data</h4>
+                      <p>Track trips, fuel usage, and sensor readings — all stored locally.</p>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <!-- PRIVACY ACCORDION -->
+            <div class="accordion">
+              <div class="accordion-header" onclick="toggleAccordion(this)">
+                <div>
+                  <i class="fa-solid fa-shield-halved accordion-icon"></i>
+                  Privacy & Terms — Key Points
+                  <div class="accordion-preview">
+                    Data Collected | Purpose | Sharing | Control
+                  </div>
+                </div>
+                <i class="fa-solid fa-chevron-down"></i>
+              </div>
+
+              <div class="accordion-content fade">
+                <div class="features">
+
+                  <div class="feature">
+                    <div class="ico"><i class="fa-solid fa-database"></i></div>
+                    <div>
+                      <h4>Data Collected</h4>
+                      <div>Only a hashed device fingerprint to grant limited free trial credits. No personal info or
+                        telemetry.</div>
+                    </div>
+                  </div>
+
+                  <div class="feature">
+                    <div class="ico"><i class="fa-solid fa-bullseye"></i></div>
+                    <div>
+                      <h4>Purpose</h4>
+                      <div>Used strictly to manage trial credits and prevent abuse.</div>
+                    </div>
+                  </div>
+
+                  <div class="feature">
+                    <div class="ico"><i class="fa-solid fa-eye-slash"></i></div>
+                    <div>
+                      <h4>Sharing & Sale</h4>
+                      <div>Never shared, never sold, never used for ads or profiling.</div>
+                    </div>
+                  </div>
+
+                  <div class="feature">
+                    <div class="ico"><i class="fa-solid fa-user-shield"></i></div>
+                    <div>
+                      <h4>Your Control</h4>
+                      <div>Request deletion anytime via qlenfixautocare@gmail.com</div>
+                    </div>
+                  </div>
+
+                  <div class="feature">
+                    <div class="ico"><i class="fa-solid fa-lock"></i></div>
+                    <div>
+                      <p class="privacy-note">
+                        Fingerprint stored encrypted. All vehicle data stays on-device unless you export it.
+                      </p>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div> <!-- /.content-inner -->
+      </article>
+
+    </main>
+
+    <!-- <footer>
+      <div>&copy; 2025 Qlenfix Autocare — Built for trust & clarity.</div>
+    </footer> -->
+  </div>
+
+  <script>
+    // Single toggleAccordion function for both accordions.
+    function toggleAccordion(header) {
+      const accordion = header.closest('.accordion');
+      const content = header.nextElementSibling;
+      const icon = header.querySelector('i.fa-chevron-down');
+
+      // Toggle the content open/closed
+      const willOpen = !content.classList.contains('open');
+
+      if (willOpen) {
+        content.classList.add('open');
+        accordion.classList.add('open');
+        if (icon) icon.style.transform = 'rotate(180deg)';
+      } else {
+        content.classList.remove('open');
+        accordion.classList.remove('open');
+        if (icon) icon.style.transform = 'rotate(0deg)';
+      }
+    }
+
+    // Ensure Features accordion is open on load (defensive)
+    (function ensureDefaultOpen() {
+      try {
+        const firstAccordion = document.querySelector('.accordion-container .accordion');
+        if (firstAccordion) {
+          const header = firstAccordion.querySelector('.accordion-header');
+          const content = firstAccordion.querySelector('.accordion-content');
+          const icon = header.querySelector('i.fa-chevron-down');
+          if (content && !content.classList.contains('open')) {
+            content.classList.add('open');
+            firstAccordion.classList.add('open');
+            if (icon) icon.style.transform = 'rotate(180deg)';
+          }
+        }
+      } catch (e) {
+        // silent fail - doesn't break UI
+        console.warn(e);
+      }
+    })();
+  </script>
+</body>
+
+</html>
