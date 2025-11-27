@@ -373,6 +373,52 @@
       letter-spacing: 0.3px;
       user-select: none;
     }
+
+    .playstore-btn {
+      text-decoration: none;
+    }
+
+    .playstore-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 24px;
+      /* increase width */
+      border: 2px solid var(--accent);
+      border-radius: 12px;
+      color: var(--accent);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .playstore-badge:hover {
+      background: rgba(66, 255, 66, 0.1);
+    }
+
+    .playstore-badge i {
+      font-size: 2rem;
+    }
+
+    .badge-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .small-text {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .large-text {
+      font-size: 1.1rem;
+      font-weight: 900;
+    }
   </style>
 </head>
 
@@ -388,12 +434,27 @@
         <a href="https://play.google.com/store/apps/details?id=com.qlenapps.qlenfixautocare" target="_blank">
           <img src="bg.png" alt="Qlenfix app screenshot on phone" class="promo-image">
         </a>
+        <a href="https://play.google.com/store/apps/details?id=com.qlenapps.qlenfixautocare" target="_blank"
+          class="playstore-btn">
+          <div class="playstore-badge">
+            <i class="fa-brands fa-google-play"></i>
+            <div class="badge-text">
+              <span class="small-text">GET IT ON</span>
+              <span class="large-text">Google Play</span>
+            </div>
+          </div>
+        </a>
+
+
+
+
+
       </aside>
 
       <article class="content" aria-labelledby="features-title">
         <div class="content-inner">
           <div class="eyebrow">Smart OBD-II Scan • Instant AI Auto-Diagnosis</div>
-          <h1 id="features-title">Reliable vehicle health, instantly</h1>
+          <h1 id="features-title">Smart Scanner & AI Auto-Diagnosis</h1>
           <p class="lead">Instantly scan and interpret complex Diagnostic Trouble Codes with our modern OBD tool. Get
             AI-powered
             insights, repair suggestions, and troubleshooting flows, ensuring your vehicle performs at its peak.
